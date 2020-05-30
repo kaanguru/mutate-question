@@ -3,7 +3,7 @@
 
 # NPM
 node_modules
-
+yarn.lock
 # NativeScript application
 hooks
 platforms
