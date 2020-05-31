@@ -12,7 +12,7 @@
 import { apolloClient } from "../main";
 import * as mutations from "../graphql/mutations";
 import * as queries from "../graphql/queries";
-import App from "./App.vue";
+import List from "./List.vue";
 export default {
   data() {
     return {
@@ -24,8 +24,8 @@ export default {
   },
   methods: {
     addBook() {
-      console.log("this.book.name :>> ", this.book.name);
-      console.log("this.book.year :>> ", this.book.year);
+      // console.log("this.book.name :>> ", this.book.name);
+      // console.log("this.book.year :>> ", this.book.year);
       apolloClient
         .mutate({
           // Query
@@ -35,22 +35,23 @@ export default {
             name: this.book.name,
             year: this.book.year,
           },
+          // HOW TO UPDATE
           update: (store, { data }) => {
-            console.log("store  ::::>> ", store);
+            // console.log("store  ::::>> ", store);
             console.log("data   ::::>> ", data.createBook.book);
             const bookQuery = {
               query: queries.ALL_BOOKS,
             };
-            const bookData = store.readQuery(bookQuery);
+            const bookData:any = store.readQuery(bookQuery);
             console.log('bookData :>> ', bookData);
-            // bookData.push(createBook);
+            bookData.books.push(data.createBook.book);
             store.writeQuery({ ...bookQuery, data: bookData })
           },
         })
         .then((data) => {
           // Result
           console.log("new data.data id  ::::: :>> ", data.data.createBook.book.id);
-          this.$navigateTo(App);
+          this.$navigateTo(List);
         })
         .catch((error) => {
           // Error

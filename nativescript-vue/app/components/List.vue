@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <GridLayout columns="*" rows="*,80" class="p-5">
+    <GridLayout columns="*" rows="*,30" class="p-5">
       <Label v-if="$apollo.loading" text="loading ...  " textWrap="true" class="h2" row="0" col="0" />
       <GridLayout v-else rows="*" columns="*" row="0" col="0">
         <ListView for="book in books" row="0" col="0" >
@@ -9,7 +9,7 @@
           </v-template>
         </ListView>
       </GridLayout>
-      <Button text="Go To Add Book Page" @tap="gotoAddBook" />
+      <Button text="Go To Add Book Page" @tap="gotoAddBook" row="1" col="0" />
     </GridLayout>
   </Page>
 </template>
@@ -27,6 +27,7 @@ export default {
   },
   apollo: {
     books: {
+      // prefetch: true,
       query: queries.ALL_BOOKS,
       update({ books }) {
         return books;

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import App from './App';
+import List from './List';
 import { request } from "tns-core-modules/http";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import * as ApplicationSettings from "tns-core-modules/application-settings";
@@ -62,7 +62,7 @@ export default {
           }
         )
         .then(() => {
-          this.$navigateTo(App);
+          this.$navigateTo(List);
         });
     },
   },

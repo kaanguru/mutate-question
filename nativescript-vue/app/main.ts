@@ -1,5 +1,5 @@
 import Vue from 'nativescript-vue'
-import App from './components/App.vue'
+import List from './components/List.vue'
 import Login from './components/Login.vue'
 import * as ApplicationSettings from "tns-core-modules/application-settings";
 import VueDevtools from 'nativescript-vue-devtools'
@@ -49,10 +49,10 @@ if(TNS_ENV !== 'production') {
 import store from './store'
 
 // Prints Vue logs when --env.production is *NOT* set while building
-Vue.config.silent = (TNS_ENV === 'production')
+Vue.config.silent = true
 
 new Vue({
   store,
   apolloProvider,
-  render: h => h("frame", [h(ApplicationSettings.hasKey("token")? App : Login)])
+  render: h => h("frame", [h(ApplicationSettings.hasKey("token")? List : Login)])
 }).$start()
