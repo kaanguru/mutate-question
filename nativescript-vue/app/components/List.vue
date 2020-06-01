@@ -3,7 +3,7 @@
     <GridLayout columns="*" rows="*,30" class="p-5">
       <Label v-if="$apollo.loading" text="loading ...  " textWrap="true" class="h2" row="0" col="0" />
       <GridLayout v-else rows="*" columns="*" row="0" col="0">
-        <ListView for="book in books" row="0" col="0" >
+        <ListView for="book in books" row="0" col="0">
           <v-template>
             <Label :text="book.name" :key="book.id" @tap="gotoDetail(book.id)" class="p-3 m-3" />
           </v-template>
@@ -19,16 +19,23 @@ import AddBook from "./AddBook.vue";
 import Details from "./Details.vue";
 import { gql } from "apollo-boost";
 import * as queries from "../graphql/queries";
+import * as ApplicationSettings from "tns-core-modules/application-settings";
+
 export default {
+
   data() {
     return {
+      // userID: ApplicationSettings.getNumber("userID"),
       books: [],
     };
   },
   apollo: {
     books: {
       // prefetch: true,
-      query: queries.ALL_BOOKS,
+      query: queries.ALL_MY_BOOKS,
+      variables: {
+        userID: 1,
+      },
       update({ books }) {
         return books;
       },
@@ -42,8 +49,18 @@ export default {
       });
     },
     gotoAddBook() {
-      this.$navigateTo(AddBook);
+      this.$navigateTo(AddBook, {
+        props: { userID: this.userID },
+      });
     },
+  },
+  mounted() {
+    console.log("this.userID :>> ", this.userID);
+  },
+  computed: {
+    userID() {
+      return ApplicationSettings.getNumber("userID"); 
+    }
   },
 };
 </script>

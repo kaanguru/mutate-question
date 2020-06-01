@@ -5,6 +5,7 @@
       <StackLayout v-else>
         <Label :text="book.name" textWrap="true" row="0" col="0" class="h3" />
         <Label :text="book.year" textWrap="true" row="0" col="0" class="p-t-3" />
+        <!-- <Label :text="book.user.username" textWrap="true" row="0" col="0" class="p-t-3" /> -->
       </StackLayout>
     </GridLayout>
   </Page>

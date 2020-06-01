@@ -13,7 +13,14 @@ import { apolloClient } from "../main";
 import * as mutations from "../graphql/mutations";
 import * as queries from "../graphql/queries";
 import List from "./List.vue";
+import * as ApplicationSettings from "tns-core-modules/application-settings";
+
 export default {
+  props: {
+    userID: {
+      type: Number,
+    },
+  },
   data() {
     return {
       book: {
@@ -24,8 +31,7 @@ export default {
   },
   methods: {
     addBook() {
-      // console.log("this.book.name :>> ", this.book.name);
-      // console.log("this.book.year :>> ", this.book.year);
+
       apolloClient
         .mutate({
           // Query
@@ -34,18 +40,25 @@ export default {
           variables: {
             name: this.book.name,
             year: this.book.year,
+            userID: 1,
           },
-          // HOW TO UPDATE
           update: (store, { data }) => {
-            // console.log("store  ::::>> ", store);
-            console.log("data   ::::>> ", data.createBook.book);
-            const bookQuery = {
-              query: queries.ALL_BOOKS,
-            };
-            const bookData:any = store.readQuery(bookQuery);
-            console.log('bookData :>> ', bookData);
-            bookData.books.push(data.createBook.book);
-            store.writeQuery({ ...bookQuery, data: bookData })
+            try {
+
+              console.log("data of incoming book  ::::>> ", data.createBook.book);
+              const bookQuery = {
+                query: queries.ALL_MY_BOOKS,
+                variables: {
+                   userID: 1,
+                }
+              };
+              const bookData: any = store.readQuery(bookQuery);
+              console.log("bookData :>> ", bookData);
+              bookData.books.push(data.createBook.book);
+              store.writeQuery({ ...bookQuery, data: bookData });
+            } catch (error) {
+              console.error(error);
+            }
           },
         })
         .then((data) => {

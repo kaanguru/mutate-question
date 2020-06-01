@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import List from './List';
+import List from "./List";
 import { request } from "tns-core-modules/http";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import * as ApplicationSettings from "tns-core-modules/application-settings";
@@ -27,8 +27,6 @@ export default {
       // clear token to prevent errors (if malformed)
       ApplicationSettings.remove("token");
       ApplicationSettings.remove("userID");
-      ApplicationSettings.remove("userData");
-
       request({
         url: "https://polar-badlands-01357.herokuapp.com/auth/local",
         method: "POST",
@@ -43,10 +41,7 @@ export default {
             const result = response.content.toJSON();
             ApplicationSettings.setString("token", result.jwt);
             console.log("JWT from Server: ", result.jwt);
-
             ApplicationSettings.setNumber("userID", result.user.id);
-            // userData object to string
-            ApplicationSettings.setString("userData", JSON.stringify(result.user));
           },
           (e) => {
             console.error("auth/local error :", e);

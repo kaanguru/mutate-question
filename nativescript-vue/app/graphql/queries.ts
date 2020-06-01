@@ -1,11 +1,15 @@
 import { gql } from "apollo-boost";
 
-export const ALL_BOOKS = gql`
-  query books {
-    books {
+export const ALL_MY_BOOKS = gql`
+  query allMyBooks($userID: ID!) {
+    books(where: { user:  $userID  }) {
       id
       name
       year
+      user {
+        id
+        username
+      }
     }
   }
 `;
@@ -15,7 +19,10 @@ export const BOOK = gql`
       id
       name
       year
+      user {
+        id
+        username
+      }
     }
   }
 `;
-
